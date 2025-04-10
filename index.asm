@@ -7,30 +7,47 @@ INICIO:
     MOV P1, #0FFh      ; Inicializa P1 (segmentos)
     MOV P0, #0FFh      ; Inicializa P0 (keypad)
 
+    ; Inicializa contadores
+    MOV 40h, #0        ; Contador de números digitados (0-3)
+    MOV 41h, #0        ; Contador de posição do display (0-3)
+    MOV 42h, #0        ; Contador de posição na memória (0-3)
+
+    ; Armazena a senha inicial "1234" na memória
+    MOV 20h, #1        ; Primeiro dígito
+    MOV 21h, #2        ; Segundo dígito
+    MOV 22h, #3        ; Terceiro dígito
+    MOV 23h, #4        ; Quarto dígito
+
+    ; Inicializa posições de memória para senha digitada
+    MOV 30h, #0        ; Primeiro dígito digitado
+    MOV 31h, #0        ; Segundo dígito digitado
+    MOV 32h, #0        ; Terceiro dígito digitado
+    MOV 33h, #0        ; Quarto dígito digitado
+
 START:
     CALL SCAN_KEYBOARD ; Verifica teclado
     JMP START          ; Loop principal
 
 SCAN_KEYBOARD:
-    ; Verifica linha 3 (primeira linha física - 1,2,3)
+    ; Verifica linha 3 (1,2,3)
     MOV P0, #11110111b ; Ativa linha 3
     MOV A, P0
     ANL A, #11110000b  ; Mascara para ler apenas as colunas
     CJNE A, #11110000b, ROW3_PRESSED
 
-    ; Verifica linha 2 (segunda linha física - 4,5,6)
+    ; Verifica linha 2 (4,5,6)
     MOV P0, #11111011b ; Ativa linha 2
     MOV A, P0
     ANL A, #11110000b  ; Mascara para ler apenas as colunas
     CJNE A, #11110000b, ROW2_PRESSED
 
-    ; Verifica linha 1 (terceira linha física - 7,8,9)
+    ; Verifica linha 1 (7,8,9)
     MOV P0, #11111101b ; Ativa linha 1
     MOV A, P0
     ANL A, #11110000b  ; Mascara para ler apenas as colunas
     CJNE A, #11110000b, ROW1_PRESSED
 
-    ; Verifica linha 0 (última linha física - *,0,#)
+    ; Verifica linha 0 (*,0,#)
     MOV P0, #11111110b ; Ativa linha 0
     MOV A, P0
     ANL A, #11110000b  ; Mascara para ler apenas as colunas
