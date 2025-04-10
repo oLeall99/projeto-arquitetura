@@ -24,6 +24,13 @@ INICIO:
     MOV 32h, #0        ; Terceiro dígito digitado
     MOV 33h, #0        ; Quarto dígito digitado
 
+    ; Inicializa posições de memória para displays
+    MOV 50h, #0        ; Primeiro display
+    MOV 51h, #0        ; Segundo display
+    MOV 52h, #0        ; Terceiro display
+    MOV 53h, #0        ; Quarto display
+
+
 START:
     CALL SCAN_KEYBOARD ; Verifica teclado
     JMP START          ; Loop principal
